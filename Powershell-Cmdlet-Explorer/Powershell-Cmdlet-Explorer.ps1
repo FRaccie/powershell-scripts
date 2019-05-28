@@ -13,7 +13,11 @@ $modulesList_SelectedIndexChanged = {
 	$selected = $modulesList.SelectedIndex
 	$cmdletsList.Items.Clear()
 	$mname = $modulesList.Items[$selected].ToString()
-	$commands = Get-Command -Module $mname | Sort-Object Name
+	If($mname = "VMware.PowerCLI") {
+		$commands = Get-VICommand -Module $mname | Sort-Object Name
+	} else {
+		$commands = Get-Command -Module $mname | Sort-Object Name
+	}
 	foreach($command in $commands) {
 		$cmdletsList.Items.Add($command.Name)
 	}
